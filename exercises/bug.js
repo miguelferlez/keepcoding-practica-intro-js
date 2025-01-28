@@ -12,4 +12,4 @@ const calcularPromedio = (numeros) => {
 
 const listaNumeros = [1, 2, 3, 4, 5];
 const promedioNumeros = calcularPromedio(listaNumeros);
-console.log(promedioNumeros);
+console.log(`promedio de [${listaNumeros}]: ${promedioNumeros}`); // promedio de [1,2,3,4,5]: 3
