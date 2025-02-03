@@ -103,7 +103,20 @@ const musicCatalog = () => {
    * @param {string} playlistName - The name of the playlist containing the song.
    * @param {string} title - The title of the song to mark as a favorite.
    */
-  const favoriteSong = (playlistName, title) => { };
+  const favoriteSong = (playlistName, title) => { 
+    playlists = playlists.map(playlistElement => {
+      if (playlistElement.name === playlistName) {
+        const updatedSongs = playlistElement.songs.map(song => {
+          if (song.title == title) {
+            return {...song, favorite: !song.favorite};
+          }
+          return song;
+        });
+        return {...playlistElement, songs: [...updatedSongs]};
+      }
+      return playlistElement;
+    });
+  };
 
   /**
    * Sorts songs in a specific playlist by a given criterion (title, artist, or duration).
@@ -129,12 +142,14 @@ test.removePlaylist('Best of Ennio Morricone');
 test.addSongToPlaylist('Rock mix', { title: 'In the End', artist: 'Linkin Park', genre: 'rock', duration: 216 });
 test.addSongToPlaylist('Rock mix', { title: 'The Hell Song', artist: 'Sum 41', genre: 'rock', duration: 201 });
 // console.log(test.getAllPlaylists());
-test.addSongToPlaylist('Pop mix', { title: 'Thriller', artist: 'Michael Jackson', genre: 'pop', duration: 311 });
+// test.addSongToPlaylist('Pop mix', { title: 'Thriller', artist: 'Michael Jackson', genre: 'pop', duration: 311 });
 // console.log(test.getAllPlaylists());
 
-test.removeSongFromPlaylist('Rock mix', 'Indestructible');
+// test.removeSongFromPlaylist('Rock mix', 'Indestructible');
 // console.log(test.getAllPlaylists());
 
+test.favoriteSong('Rock mix', 'In the End');
+console.log(test.getAllPlaylists());
 
 
 export default musicCatalog;
