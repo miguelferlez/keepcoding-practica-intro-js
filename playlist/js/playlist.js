@@ -42,7 +42,7 @@ const musicCatalog = () => {
    * @param {string} playlistName - The name of the playlist to remove.
    */
   const removePlaylist = (playlistName) => {
-    playlists = playlists.filter(playslist => playslist.name !== playlistName);
+    playlists = playlists.filter(({ name }) => name !== playlistName);
   };
 
   /**
@@ -52,7 +52,21 @@ const musicCatalog = () => {
    * @throws {Error} If the playlist is not found.
    */
   const addSongToPlaylist = (playlistName, song) => {
-    
+    const playlist = playlists.find(({ name }) => name === playlistName);
+    try {
+      if (!playlist) {
+        throw new Error(`Playlist '${playlistName}' not found!`);
+      }
+    } catch (error) {
+      console.log(error);
+      return playlists;
+    }
+    playlists = playlists.map(playlistElement => {
+      if (playlistElement.name === playlistName) {
+        return { ...playlistElement, songs: [...playlistElement.songs, { ...song, favorite: false }] };
+      }
+      return playlistElement;
+    });
   };
 
   /**
@@ -61,7 +75,28 @@ const musicCatalog = () => {
    * @param {string} title - The title of the song to remove.
    * @throws {Error} If the playlist or song is not found.
    */
-  const removeSongFromPlaylist = (playlistName, title) => { };
+  const removeSongFromPlaylist = (playlistName, title) => {
+    const playlist = playlists.find(({ name }) => name === playlistName);
+    try {
+      if (!playlist) {
+        throw new Error(`Playlist '${playlistName}' not found!`);
+      } else {
+        const playlistSong = playlist.songs.find(song => song.title === title);
+        if (!playlistSong) {
+          throw new Error(`Song '${title}' not found in '${playlistName}' playlist!`);
+        }
+      }
+    } catch (error) {
+      console.log(error);
+      return playlists;
+    }
+    playlists = playlists.map(playlistElement => {
+      if (playlistElement.name === playlistName) {
+        return { ...playlistElement, songs: [...playlistElement.songs.filter(song => song.title !== title)] };
+      }
+      return playlistElement;
+    });
+  };
 
   /**
    * Marks a song as a favorite or removes the favorite status.
@@ -86,22 +121,20 @@ const test = musicCatalog();
 test.createPlaylist('Rock mix');
 test.createPlaylist('Best of Ennio Morricone');
 test.createPlaylist('Best of Hans Zimmer');
-console.log(test.getAllPlaylists());
-test.removePlaylist('Rock mix');
-console.log(test.getAllPlaylists());
+// console.log(test.getAllPlaylists());
 
-// console.log(micart.getCart());
-// console.log(micart.getDiscounts());
-// console.log(micart.getTotal());
-// try {
-//   micart.applyDiscount('No existe', 12);
-// } catch (error) {
-//   console.log(error);
-// }
-// micart.applyDiscount('cap', 10);
-// console.log(micart.getDiscounts());
-// console.log(micart.getTotal());
-// micart.removeProduct('cap');
-// console.log(micart.getTotal());
+test.removePlaylist('Best of Ennio Morricone');
+// console.log(test.getAllPlaylists());
+
+test.addSongToPlaylist('Rock mix', { title: 'In the End', artist: 'Linkin Park', genre: 'rock', duration: 216 });
+test.addSongToPlaylist('Rock mix', { title: 'The Hell Song', artist: 'Sum 41', genre: 'rock', duration: 201 });
+// console.log(test.getAllPlaylists());
+test.addSongToPlaylist('Pop mix', { title: 'Thriller', artist: 'Michael Jackson', genre: 'pop', duration: 311 });
+// console.log(test.getAllPlaylists());
+
+test.removeSongFromPlaylist('Rock mix', 'Indestructible');
+// console.log(test.getAllPlaylists());
+
+
 
 export default musicCatalog;
