@@ -103,16 +103,16 @@ const musicCatalog = () => {
    * @param {string} playlistName - The name of the playlist containing the song.
    * @param {string} title - The title of the song to mark as a favorite.
    */
-  const favoriteSong = (playlistName, title) => { 
+  const favoriteSong = (playlistName, title) => {
     playlists = playlists.map(playlistElement => {
       if (playlistElement.name === playlistName) {
         const updatedSongs = playlistElement.songs.map(song => {
           if (song.title == title) {
-            return {...song, favorite: !song.favorite};
+            return { ...song, favorite: !song.favorite };
           }
           return song;
         });
-        return {...playlistElement, songs: [...updatedSongs]};
+        return { ...playlistElement, songs: [...updatedSongs] };
       }
       return playlistElement;
     });
@@ -125,7 +125,31 @@ const musicCatalog = () => {
    * @returns {Song[]} The list of sorted songs.
    * @throws {Error} If the playlist is not found or the criterion is invalid.
    */
-  const sortSongs = (playlistName, criterion) => { };
+  const sortSongs = (playlistName, criterion) => {
+    const playlist = playlists.find(({ name }) => name === playlistName);
+    try {
+      if (!playlist) {
+        throw new Error(`Playlist '${playlistName}' not found!`);
+      } else if (!criterion == 'title' || !criterion == 'artist' || !criterion == 'duration') {
+        throw new Error(`Songs cannot be sorted by '${criterion}'!`);
+      }
+    } catch (error) {
+      console.log(error);
+      return playlists;
+    }
+    playlists = playlists.map(playlistElement => {
+      if (playlistElement.name == playlistName) {
+        if (criterion == 'title') {
+          return { ...playlistElement, songs: [...playlistElement.songs.sort((a, b) => a.title.localeCompare(b.title))] };
+        } else if (criterion == 'artist') {
+          return { ...playlistElement, songs: [...playlistElement.songs.sort((a, b) => a.artist.localeCompare(b.artist))] };
+        } else if (criterion == 'duration') {
+          return { ...playlistElement, songs: [...playlistElement.songs.sort((a, b) => a.duration - b.duration)] };
+        }
+      }
+      return playlistElement;
+    });
+  };
 
   return { createPlaylist, addSongToPlaylist, removeSongFromPlaylist, sortSongs, getAllPlaylists, removePlaylist, favoriteSong };
 };
