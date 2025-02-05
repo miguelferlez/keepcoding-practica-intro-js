@@ -53,13 +53,8 @@ const musicCatalog = () => {
    */
   const addSongToPlaylist = (playlistName, song) => {
     const playlist = playlists.find(({ name }) => name === playlistName);
-    try {
-      if (!playlist) {
-        throw new Error(`Playlist '${playlistName}' not found!`);
-      }
-    } catch (error) {
-      console.log(error);
-      return playlists;
+    if (!playlist) {
+      throw new Error(`Playlist '${playlistName}' not found!`);
     }
     playlists = playlists.map(playlistElement => {
       if (playlistElement.name === playlistName) {
@@ -77,18 +72,13 @@ const musicCatalog = () => {
    */
   const removeSongFromPlaylist = (playlistName, title) => {
     const playlist = playlists.find(({ name }) => name === playlistName);
-    try {
-      if (!playlist) {
-        throw new Error(`Playlist '${playlistName}' not found!`);
-      } else {
-        const playlistSong = playlist.songs.find(song => song.title === title);
-        if (!playlistSong) {
-          throw new Error(`Song '${title}' not found in '${playlistName}' playlist!`);
-        }
+    if (!playlist) {
+      throw new Error(`Playlist '${playlistName}' not found!`);
+    } else {
+      const playlistSong = playlist.songs.find(song => song.title === title);
+      if (!playlistSong) {
+        throw new Error(`Song '${title}' not found in '${playlistName}' playlist!`);
       }
-    } catch (error) {
-      console.log(error);
-      return playlists;
     }
     playlists = playlists.map(playlistElement => {
       if (playlistElement.name === playlistName) {
@@ -127,15 +117,10 @@ const musicCatalog = () => {
    */
   const sortSongs = (playlistName, criterion) => {
     const playlist = playlists.find(({ name }) => name === playlistName);
-    try {
-      if (!playlist) {
-        throw new Error(`Playlist '${playlistName}' not found!`);
-      } else if (!criterion == 'title' || !criterion == 'artist' || !criterion == 'duration') {
-        throw new Error(`Songs cannot be sorted by '${criterion}'!`);
-      }
-    } catch (error) {
-      console.log(error);
-      return playlists;
+    if (!playlist) {
+      throw new Error(`Playlist '${playlistName}' not found!`);
+    } else if (criterion !== 'title' && criterion !== 'artist' && criterion !== 'duration') {
+      throw new Error(`Songs cannot be sorted by '${criterion}'!`);
     }
     playlists = playlists.map(playlistElement => {
       if (playlistElement.name == playlistName) {
@@ -153,27 +138,5 @@ const musicCatalog = () => {
 
   return { createPlaylist, addSongToPlaylist, removeSongFromPlaylist, sortSongs, getAllPlaylists, removePlaylist, favoriteSong };
 };
-
-const test = musicCatalog();
-test.createPlaylist('Rock mix');
-test.createPlaylist('Best of Ennio Morricone');
-test.createPlaylist('Best of Hans Zimmer');
-// console.log(test.getAllPlaylists());
-
-test.removePlaylist('Best of Ennio Morricone');
-// console.log(test.getAllPlaylists());
-
-test.addSongToPlaylist('Rock mix', { title: 'In the End', artist: 'Linkin Park', genre: 'rock', duration: 216 });
-test.addSongToPlaylist('Rock mix', { title: 'The Hell Song', artist: 'Sum 41', genre: 'rock', duration: 201 });
-// console.log(test.getAllPlaylists());
-// test.addSongToPlaylist('Pop mix', { title: 'Thriller', artist: 'Michael Jackson', genre: 'pop', duration: 311 });
-// console.log(test.getAllPlaylists());
-
-// test.removeSongFromPlaylist('Rock mix', 'Indestructible');
-// console.log(test.getAllPlaylists());
-
-test.favoriteSong('Rock mix', 'In the End');
-console.log(test.getAllPlaylists());
-
 
 export default musicCatalog;
