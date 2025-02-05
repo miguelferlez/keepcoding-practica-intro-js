@@ -58,7 +58,13 @@ const musicCatalog = () => {
     }
     playlists = playlists.map(playlistElement => {
       if (playlistElement.name === playlistName) {
-        return { ...playlistElement, songs: [...playlistElement.songs, { ...song, favorite: false }] };
+        return {
+          ...playlistElement, songs: [...playlistElement.songs, {
+            ...song,
+            duration: parseInt(song.duration),
+            favorite: false
+          }]
+        };
       }
       return playlistElement;
     });
