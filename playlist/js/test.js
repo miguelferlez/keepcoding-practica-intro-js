@@ -1,11 +1,11 @@
-import musicCatalog from "./playlist";
+import musicCatalog from "./playlist.js";
 
 const test = musicCatalog();
 
 test.createPlaylist('Rock mix');
 test.createPlaylist('Best of Ennio Morricone');
 test.createPlaylist('Best of Hans Zimmer');
-// console.log(test.getAllPlaylists()); 
+console.log(test.getAllPlaylists()); 
 /* output:
 [
     {name: 'Rock mix', songs: []},
@@ -15,7 +15,7 @@ test.createPlaylist('Best of Hans Zimmer');
 */
 
 test.removePlaylist('Best of Ennio Morricone');
-// console.log(test.getAllPlaylists());
+console.log(test.getAllPlaylists());
 /* output:
 [
     {name: 'Rock mix', songs: []},
@@ -30,7 +30,7 @@ try {
 } catch (error) {
     console.log(error);
 }
-// console.log(test.getAllPlaylists());
+console.log(test.getAllPlaylists());
 /* output: 
 Error: Playlist 'Pop mix' not found!
 [
@@ -51,7 +51,7 @@ try {
 } catch (error) {
     console.log(error); 
 }
-// console.log(test.getAllPlaylists());
+console.log(test.getAllPlaylists());
 /* output: 
 Error: Song 'Indestructible' not found in 'Rock mix' playlist!
 [
@@ -82,7 +82,7 @@ test.addSongToPlaylist('Rock mix', { title: 'Heavy is the Crown', artist: 'Linki
 test.addSongToPlaylist('Rock mix', { title: 'Indestructible', artist: 'Disturbed', genre: 'Heavy Metal', duration: 286 });
 
 test.sortSongs('Rock mix', 'title');
-// console.log(test.getAllPlaylists());
+console.log(test.getAllPlaylists());
 /* output: 
 [
     {
@@ -97,7 +97,7 @@ test.sortSongs('Rock mix', 'title');
     {name: 'Best of Hans Zimmer', songs: []}
 */
 test.sortSongs('Rock mix', 'artist');
-// console.log(test.getAllPlaylists());
+console.log(test.getAllPlaylists());
 /* output: 
 [
     {
@@ -112,7 +112,7 @@ test.sortSongs('Rock mix', 'artist');
     {name: 'Best of Hans Zimmer', songs: []}
 */
 test.sortSongs('Rock mix', 'duration');
-// console.log(test.getAllPlaylists());
+console.log(test.getAllPlaylists());
 /* output: 
 [
     {
@@ -128,6 +128,11 @@ test.sortSongs('Rock mix', 'duration');
 */
 try {
     test.sortSongs('Hip Hop mix', 'title');
+    
+} catch (error) {
+    console.log(error);
+}
+try {
     test.sortSongs('Rock mix', 'year');
 } catch (error) {
     console.log(error);
