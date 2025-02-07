@@ -129,12 +129,12 @@ const musicCatalog = () => {
       throw new Error(`Songs cannot be sorted by '${criterion}'!`);
     }
     playlists = playlists.map(playlistElement => {
-      if (playlistElement.name == playlistName) {
-        if (criterion == 'title') {
+      if (playlistElement.name === playlistName) {
+        if (criterion === 'title') {
           return { ...playlistElement, songs: [...playlistElement.songs.sort((a, b) => a.title.localeCompare(b.title))] };
-        } else if (criterion == 'artist') {
+        } else if (criterion === 'artist') {
           return { ...playlistElement, songs: [...playlistElement.songs.sort((a, b) => a.artist.localeCompare(b.artist))] };
-        } else if (criterion == 'duration') {
+        } else if (criterion === 'duration') {
           return { ...playlistElement, songs: [...playlistElement.songs.sort((a, b) => a.duration - b.duration)] };
         }
       }
